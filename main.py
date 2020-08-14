@@ -6,9 +6,11 @@ app = Flask(__name__)
 ui = WebInterface()
 game = Board()
 
+
 @app.route('/')
 def root():
     return render_template('index.html')
+
 
 @app.route('/newgame')
 def newgame():
@@ -20,7 +22,9 @@ def newgame():
     ui.inputlabel = f'{game.turn} player: '
     ui.errmsg = None
     ui.btnlabel = 'Move'
-    return redirect(url_for('play', _external=True,_scheme='https'))
+    return redirect(url_for('play'))
+    # , _external=True, _scheme='https' (for https redirection)
+
 
 @app.route('/play')
 def play():
@@ -31,8 +35,10 @@ def play():
     # If move is valid, check for pawns to promote
     # Redirect to /promote if there are pawns to promote, otherwise 
 
+
 @app.route('/promote')
 def promote():
     pass
+
 
 app.run('0.0.0.0', debug=True)

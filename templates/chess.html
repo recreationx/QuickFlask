@@ -3,15 +3,16 @@
     <head>
         <meta charset="utf-8">
         <!-- Change your page title -->
-        <title>This is the page title</title>
+        <title>Chess</title>
         <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     </head>
     <body>
         <!-- Modify this section START -->
-        <p>[Placeholder for chess board]</p>
+        <center>
         <label>{{ ui.inputlabel }}</label>
         <input type="text" name="player_input" value="">
         <input type="submit" value="{{ ui.btnlabel }}">
+        </center>
         <!-- Modify this section END -->
     </body>
 </html>

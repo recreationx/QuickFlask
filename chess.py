@@ -6,7 +6,6 @@ class WebInterface:
         self.board = None
 
 
-
 class MoveError(Exception):
     '''Custom error for invalid moves.'''
     pass

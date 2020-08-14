@@ -18,4 +18,19 @@
 
 button {
     margin: 5px;
+
+    
+}
+
+.chess-board {border-spacing:0; 
+              border-collapse:collapse
+}
+.chess-board td{border:1px solid; 
+                width:2em;
+                height:2em;
+}
+.chess-board .light {background-color:"green";
+    
+}
+.chess-board .dark {background-color:green;
 }

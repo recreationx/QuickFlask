@@ -16,11 +16,22 @@
     <img src="../static/images/chess.png" alt="chesslogo" id=logo>
     <h1 id="chess">Chess</h1>
     <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='/newgame'">New Game</button>
-    <button type="button" class="btn btn-secondary btn-lg" >Settings</button>
+    <button type="button" class="btn btn-secondary btn-lg" data-toggle="tooltip" data-placement="top" title="" data-original-title="WIP" >Settings</button>
     <blockquote class="blockquote text-center" id="chessquote">
         <p class="mb-0">Some sacrifices are sound; the rest are mine</p>
         <footer class="blockquote-footer">Chess GM <cite title="Mikhail Tal">Mikhail Tal</cite></footer>
     </blockquote>
 </div>
+
+
+<!--- js --->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
 </body>
 </html>

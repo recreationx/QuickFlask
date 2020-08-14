@@ -18,19 +18,44 @@
 
 button {
     margin: 5px;
-
-    
 }
 
-.chess-board {border-spacing:0; 
-              border-collapse:collapse
+.chess-board {
+    border-spacing:0; 
+    border-collapse:collapse;
 }
-.chess-board td{border:1px solid; 
-                width:2em;
-                height:2em;
+.chess-board td{
+    border:1px solid; 
+    width:2em;
+    height:2em;
 }
-.chess-board .light {background-color:"green";
+.chess-board .light {
+    background-color: #999;
+    font-size: 25px;
+    height: 40px;
+    width: 41px;
+    max-height: 40px;
+    max-width: 44px;
+    text-align: center;
+    color: black;
+    font-family: 'Seogue UI Symbol'
     
 }
-.chess-board .dark {background-color:green;
+.chess-board .dark {
+    background-color: #fff;
+    font-size: 25px;
+    height: 40px;
+    width: 41px;
+    max-height: 40px;
+    max-width:44px;
+    text-align: center;
+    color: black;
+    font-family: 'Seogue UI Symbol'
+}
+
+#board {
+    margin:30px;
+}
+#inputarea {
+    margin-top:20px;
 }

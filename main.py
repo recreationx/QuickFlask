@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, redirect
+from flask import render_template, redirect, url_for
 from chess import WebInterface, Board
 
 app = Flask(__name__)
@@ -20,7 +20,7 @@ def newgame():
     ui.inputlabel = f'{game.turn} player: '
     ui.errmsg = None
     ui.btnlabel = 'Move'
-    return redirect('/play')
+    return redirect(url_for('play', _external=True,_scheme='https'))
 
 @app.route('/play')
 def play():

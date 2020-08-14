@@ -1,33 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <!-- Change your page title -->
-        <title>Chess</title>
-        <link rel="stylesheet" href="static/styles.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <meta charset="utf-8">
+    <!-- Change your page title -->
+    <title>Chess</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css">
-    </head>
-    <body>
-        <!-- Modify this section START -->
-        <center>
-        <div class="container" style="margin-top:20px">
-        <img src="https://i.imgur.com/SpY3uUi.png" alt="Placeholder for an awesome splash image" width=300px height=300px style="text-align:center;">
-        </div>
-        <div class="container" style="margin-top:20px">
-            <p>
-                <h1>Chess</h1>
-                <a href="/newgame">
-                    <button type="button" class="btn btn-primary">Start new game</button>
-                </a>
-            </p>
-        </div>
-        <div class="container">
-            <button type="button" class="btn btn-secondary">Settings</button>
-        </div>
-        </center>
-        <!-- Modify this section END -->
-    </body>
+    <link rel="stylesheet" href="../static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div style="text-align: center;">
+    <img src="../static/images/chess.png" alt="chesslogo" id=logo>
+    <h1 id="chess">Chess</h1>
+    <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='/newgame'">Start new game</button>
+    <button type="button" class="btn btn-secondary btn-lg">Settings</button>
+</div>
+</body>
 </html>

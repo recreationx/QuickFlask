@@ -29,6 +29,9 @@ class BasePiece:
         except NameError:
             return f'{self.colour} piece'
 
+    def symbol(self):
+        return f'{self.sym[self.colour]}'
+
     @staticmethod
     def vector(start, end):
         x = end[0] - start[0]
@@ -39,6 +42,7 @@ class BasePiece:
 
 class King(BasePiece):
     name = 'king'
+    sym = {"white": "♔", "black": "♚"}
     def __repr__(self):
         return f'King({repr(self.colour)})'
     
@@ -50,6 +54,7 @@ class King(BasePiece):
 
 class Queen(BasePiece):
     name = 'queen'
+    sym = {"white": "♕", "black": "♛"}
     def __repr__(self):
         return f'Queen({repr(self.colour)})'
 
@@ -65,6 +70,7 @@ class Queen(BasePiece):
 
 class Bishop(BasePiece):
     name = 'bishop'
+    sym = {"white": "♗", "black": "♝"}
     def __repr__(self):
         return f'Bishop({repr(self.colour)})'
 
@@ -78,6 +84,7 @@ class Bishop(BasePiece):
 
 class Knight(BasePiece):
     name = 'knight'
+    sym = {"white": "♘", "black": "♞"}
     def __repr__(self):
         return f'Knight({repr(self.colour)})'
 
@@ -91,6 +98,7 @@ class Knight(BasePiece):
 
 class Rook(BasePiece):
     name = 'rook'
+    sym = {"white": "♖", "black": "♜"}
     def __repr__(self):
         return f'Rook({repr(self.colour)})'
 
@@ -117,6 +125,7 @@ class Rook(BasePiece):
 
 class Pawn(BasePiece):
     name = 'pawn'
+    sym = {"white": "♙", "black": "♟"}
     def __repr__(self):
         return f'Pawn({repr(self.colour)})'
 
@@ -366,9 +375,7 @@ class Board:
             print('== DEBUG MODE ON ==')
         # helper function to generate symbols for piece
         def sym(piece):
-            colour_sym = piece.colour[0].upper()
-            piece_sym = piece.name[0].upper()
-            return f'{colour_sym}{piece_sym}'
+            return piece.symbol()
 
         # Row 7 is at the top, so print in reverse order
         print(' ' * 4, end='')

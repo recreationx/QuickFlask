@@ -18,7 +18,7 @@
                 {% if outer_loop.index == 1 %}
                     <tr>
                     {% for cell in row %}
-                        <th>&nbsp{{ cell }}&nbsp</th>
+                        <th class = 'firstrow'>{{ cell }}</th>
                     {% endfor %}
                     </tr>
                 {% else %}
@@ -26,19 +26,19 @@
                     {% for cell in row %}
                         {% set inner_loop = loop %}
                         {% if cell in ["0","1","2","3","4","5","6","7"] %}
-                            <td >&nbsp{{ cell }} {{ a }}&nbsp</td>
+                            <td class = 'number'>{{ cell }}</td>
                         {% else %}
                             {% if outer_loop.index is divisibleby 2 %}
                                 {% if inner_loop.index is divisibleby 2 %}
-                                    <td class ='dark'>&nbsp{{ cell }}&nbsp</td>
+                                    <td class ='dark'>{{ cell }}</td>
                                 {% else %}
-                                    <td class ='light'>&nbsp{{ cell }}&nbsp</td>
+                                    <td class ='light'>{{ cell }}</td>
                                 {% endif %}
                             {% else %}
                                 {% if inner_loop.index%2 == 0 %}
-                                    <td class ='light'>&nbsp{{ cell }}&nbsp</td>
+                                    <td class ='light'>{{ cell }}</td>
                                 {% else %}
-                                    <td class ='dark'>&nbsp{{ cell }}&nbsp</td>
+                                    <td class ='dark'>{{ cell }}</td>
                                 {% endif %}
                             {% endif %}
                         {% endif %}
@@ -48,6 +48,7 @@
             {% endfor %}
         </table>
         </div>
+
         <div id="inputarea">
         <label>{{ ui.inputlabel }}</label>
         <input type="text" name="player_input" value="">

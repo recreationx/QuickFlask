@@ -23,6 +23,8 @@ button {
 .chess-board {
     border-spacing:0; 
     border-collapse:collapse;
+    margin: 30px;
+
 }
 
 .chess-board .light {
@@ -44,6 +46,16 @@ button {
     height: 40px;
     width: 40px;
     font-family: 'Seogue UI Symbol';
+    text-align: center;
+}
+.chess-board .number {
+    text-align: center;
+    height: 40px;
+    width: 40px;
+    font-weight: bold;
+}
+
+.chess-board .firstrow {
     text-align: center;
 }
 

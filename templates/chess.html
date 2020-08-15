@@ -50,9 +50,13 @@
         </div>
 
         <div id="inputarea">
-        <label>{{ ui.inputlabel }}</label>
-        <input type="text" name="player_input" value="">
-        <button type="submit" class="btn btn-primary btn-sm" value="{{ ui.btnlabel }}">{{ ui.btnlabel }}</button>
+            <form action="/play" method="post">
+                <div class="form-group mx-sm-3 mb-2">
+                    <label>{{ ui.inputlabel }}</label>
+                    <input type="text" name="player_input" value="">
+                    <button type="submit" class="btn btn-primary btn-sm" value="{{ ui.btnlabel }}">{{ ui.btnlabel }}</button>
+                </div>
+            </form>
         
         </div>
         </center>

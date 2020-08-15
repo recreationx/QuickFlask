@@ -1,10 +1,9 @@
 from flask import Flask
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request
 from chess import WebInterface, Board
 
 app = Flask(__name__)
 ui = WebInterface()
-game = Board()
 
 
 @app.route('/')
@@ -17,6 +16,8 @@ def newgame():
     # Note that in Python, objects and variables
     # in the global space are available to
     # top-level functions
+    global game
+    game = Board()
     game.start()
     ui.board = game.display()
     ui.inputlabel = f'{game.turn} player: '
@@ -26,10 +27,21 @@ def newgame():
     # , _external=True, _scheme='https' (for https redirection)
 
 
-@app.route('/play')
+@app.route('/play',methods=['POST', 'GET'])
 def play():
     # TODO: get player move from GET request object
     # TODO: if there is no player move, render the page template
+    if request.method == 'POST':
+        move = request.form['player_input']
+        start, end = move.split(' ')
+        start = (int(start[0]), int(start[1]))
+        end = (int(end[0]), int(end[1]))
+        game.update(start, end)
+        game.next_turn()
+        ui.board = game.display()
+        ui.inputlabel = f'{game.turn} player: '
+        return render_template('chess.html', ui=ui)
+
     return render_template('chess.html', ui=ui)
     # TODO: Validate move, redirect player back to /play again if move is invalid
     # If move is valid, check for pawns to promote

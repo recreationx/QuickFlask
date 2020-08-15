@@ -282,8 +282,6 @@ class Board:
         '''
         if self.debug:
             print(f'== movetype({start}, {end}) ==')
-        if start is None or end is None:
-            return None
         start_piece = self.get_piece(start)
         end_piece = self.get_piece(end)
         if self.debug:

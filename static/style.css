@@ -24,33 +24,27 @@ button {
     border-spacing:0; 
     border-collapse:collapse;
 }
-.chess-board td{
-    border:1px solid; 
-    width:2em;
-    height:2em;
-}
+
 .chess-board .light {
     background-color: #999;
+    border:1px solid;
+    color: black;
     font-size: 25px;
     height: 40px;
-    width: 41px;
-    max-height: 40px;
-    max-width: 44px;
+    width: 40px;
+    font-family: 'Seogue UI Symbol';
     text-align: center;
-    color: black;
-    font-family: 'Seogue UI Symbol'
     
 }
 .chess-board .dark {
     background-color: #fff;
+    border:1px solid;
+    color: black;
     font-size: 25px;
     height: 40px;
-    width: 41px;
-    max-height: 40px;
-    max-width:44px;
+    width: 40px;
+    font-family: 'Seogue UI Symbol';
     text-align: center;
-    color: black;
-    font-family: 'Seogue UI Symbol'
 }
 
 #board {

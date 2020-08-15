@@ -6,112 +6,47 @@
         <title>Chess</title>
         <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
         <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css">
+        <link rel="icon" href="../static/favicon.ico" type="image/x-icon" />
     </head>
     <body>
         <center>
         <!-- Modify this section START -->
-        <div id="board">
-            <table class="chess-board">
-                <tr>
-                    <th>&nbsp;</th>
-                    <th>0</th>
-                    <th>1</th>
-                    <th>2</th>
-                    <th>3</th>
-                    <th>4</th>
-                    <th>5</th>
-                    <th>6</th>
-                    <th>7</th>
-                </tr>
-                <tr>
-                    <th> 7</th>
-                    <td class='light'>&#9820;</td>
-                    <td class='dark'>&#9822;</td>
-                    <td class='light'>&#9821;</td>
-                    <td class='dark'>&#9819;</td>
-                    <td class='light'>&#9818;</td>
-                    <td class='dark'>&#9821;</td>
-                    <td class='light'>&#9822;</td>
-                    <td class='dark'>&#9820;</td>
-                </tr>
-                <tr>
-                    <th> 6</th>
-                    <td class='dark'>&#9823;&#xFE0E;</td>
-                    <td class='light'>&#9823;</td>
-                    <td class='dark'>&#9823;</td>
-                    <td class='light'>&#9823;</td>
-                    <td class='dark'>&#9823;</td>
-                    <td class='light'>&#9823;</td>
-                    <td class='dark'>&#9823;</td>
-                    <td class='light'>&#9823;</td>
-                </tr>
-                <tr>
-                    <th> 5</th>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                </tr>
-                <tr>
-                    <th> 4</th>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                </tr>
-                <tr>
-                    <th> 3</th>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                </tr>
-                <tr>
-                    <th> 2</th>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                    <td class='dark'>&nbsp;</td>
-                    <td class='light'>&nbsp;</td>
-                </tr>
-                <tr>
-                    <th> 1</th>
-                    <td class='light'>&#9817;</td>
-                    <td class='dark'>&#9817;</td>
-                    <td class='light'>&#9817;</td>
-                    <td class='dark'>&#9817;</td>
-                    <td class='light'>&#9817;</td>
-                    <td class='dark'>&#9817;</td>
-                    <td class='light'>&#9817;</td>
-                    <td class='dark'>&#9817;</td>
-                </tr>
-                <tr>
-                    <th> 0</th>
-                    <td class='dark'>&#9814;</td>
-                    <td class='light'>&#9816;</td>
-                    <td class='dark'>&#9815;</td>
-                    <td class='light'>&#9813;</td>
-                    <td class='dark'>&#9812;</td>
-                    <td class='light'>&#9815;</td>
-                    <td class='dark'>&#9816;</td>
-                    <td class='light'>&#9814;</td>
-                </tr>
-            </table>
+        <div id="board" class="chess-board">
+            <table>
+            {% for row in ui.board %}
+                {% set outer_loop = loop %}
+                {% if outer_loop.index == 1 %}
+                    <tr>
+                    {% for cell in row %}
+                        <th>&nbsp{{ cell }}&nbsp</th>
+                    {% endfor %}
+                    </tr>
+                {% else %}
+                    <tr>
+                    {% for cell in row %}
+                        {% set inner_loop = loop %}
+                        {% if cell in ["0","1","2","3","4","5","6","7"] %}
+                            <td >&nbsp{{ cell }} {{ a }}&nbsp</td>
+                        {% else %}
+                            {% if outer_loop.index is divisibleby 2 %}
+                                {% if inner_loop.index is divisibleby 2 %}
+                                    <td class ='dark'>&nbsp{{ cell }}&nbsp</td>
+                                {% else %}
+                                    <td class ='light'>&nbsp{{ cell }}&nbsp</td>
+                                {% endif %}
+                            {% else %}
+                                {% if inner_loop.index%2 == 0 %}
+                                    <td class ='light'>&nbsp{{ cell }}&nbsp</td>
+                                {% else %}
+                                    <td class ='dark'>&nbsp{{ cell }}&nbsp</td>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
         </div>
         <div id="inputarea">
         <label>{{ ui.inputlabel }}</label>

@@ -12,17 +12,17 @@ class MoveError(Exception):
 
 
 class BasePiece:
-    def __init__(self,colour):
+    def __init__(self, colour):
         if type(colour) != str:
             raise TypeError('colour argument must be str')
-        elif colour.lower() not in {'white','black'}:
+        elif colour.lower() not in {'white', 'black'}:
             raise ValueError('colour must be {white,black}')
         else:
             self.colour = colour
 
     def __repr__(self):
         return f'BasePiece({repr(self.colour)})'
-    
+
     def __str__(self):
         try:
             return f'{self.colour} {self.name}'
@@ -43,9 +43,10 @@ class BasePiece:
 class King(BasePiece):
     name = 'king'
     sym = {"white": "♔", "black": "♚"}
+
     def __repr__(self):
         return f'King({repr(self.colour)})'
-    
+
     def isvalid(self, start: tuple, end: tuple):
         '''King can move 1 step horizontally or vertically.'''
         x, y, dist = self.vector(start, end)
@@ -55,6 +56,7 @@ class King(BasePiece):
 class Queen(BasePiece):
     name = 'queen'
     sym = {"white": "♕", "black": "♛"}
+
     def __repr__(self):
         return f'Queen({repr(self.colour)})'
 
@@ -71,6 +73,7 @@ class Queen(BasePiece):
 class Bishop(BasePiece):
     name = 'bishop'
     sym = {"white": "♗", "black": "♝"}
+
     def __repr__(self):
         return f'Bishop({repr(self.colour)})'
 
@@ -85,6 +88,7 @@ class Bishop(BasePiece):
 class Knight(BasePiece):
     name = 'knight'
     sym = {"white": "♘", "black": "♞"}
+
     def __repr__(self):
         return f'Knight({repr(self.colour)})'
 
@@ -99,6 +103,7 @@ class Knight(BasePiece):
 class Rook(BasePiece):
     name = 'rook'
     sym = {"white": "♖", "black": "♜"}
+
     def __repr__(self):
         return f'Rook({repr(self.colour)})'
 
@@ -111,8 +116,8 @@ class Rook(BasePiece):
                 row = 7
             if start[1] != end[1] != row:
                 return False
-            elif not((start[0] == 0 and end[0] == 3)
-                   or (start[0] == 7 and end[0] == 5)):
+            elif not ((start[0] == 0 and end[0] == 3)
+                      or (start[0] == 7 and end[0] == 5)):
                 return False
             else:
                 return True
@@ -126,6 +131,7 @@ class Rook(BasePiece):
 class Pawn(BasePiece):
     name = 'pawn'
     sym = {"white": "♙", "black": "♟"}
+
     def __repr__(self):
         return f'Pawn({repr(self.colour)})'
 
@@ -173,12 +179,13 @@ class Board:
     update(start, end)
         Carries out the move (start -> end) and updates the board.
     '''
+
     def __init__(self, **kwargs):
         self.debug = kwargs.get('debug', False)
         self._position = {}
         self.winner = None
         self.checkmate = None
-    
+
     def coords(self):
         return list(self._position.keys())
 
@@ -224,7 +231,7 @@ class Board:
             if piece.colour == colour and piece.name == name:
                 return True
         return False
-    
+
     def promotepawns(self, PieceClass=None):
         for coord in self.coords():
             row = coord[1]
@@ -310,8 +317,8 @@ class Board:
     @classmethod
     def promoteprompt(cls):
         choice = input(f'Promote pawn to '
-                    '(r=Rook, k=Knight, b=Bishop, '
-                    'q=Queen): ').lower()
+                       '(r=Rook, k=Knight, b=Bishop, '
+                       'q=Queen): ').lower()
         if choice not in 'rkbq':
             return cls.promoteprompt()
         elif choice == 'r':
@@ -358,53 +365,47 @@ class Board:
         self.add((7, 0), Rook(colour))
         for x in range(0, 8):
             self.add((x, 1), Pawn(colour))
-        
+
         self.turn = 'white'
 
         for piece in self.pieces():
             piece.notmoved = True
 
     def display(self):
-        '''
+        """
         Displays the contents of the board.
         Each piece is represented by two letters.
         First letter is the colour (W for white, B for black).
         Second letter is the name (Starting letter for each piece).
-        '''
+        """
         if self.debug:
             print('== DEBUG MODE ON ==')
         # helper function to generate symbols for piece
-        def sym(piece):
-            return piece.symbol()
-
         # Row 7 is at the top, so print in reverse order
-        print(' ' * 4, end='')
-        print('  '.join([f'{i:2}' for i in range(8)]), end='\n\n')
+        board = [[' ', '0', '1', '2', '3', '4', '5', '6', '7']]
         for row in range(7, -1, -1):
-            print(f'{row:2}  ', end='')
+            rowcurr = [str(row)]
             for col in range(8):
                 coord = (col, row)  # tuple
                 if coord in self.coords():
                     piece = self.get_piece(coord)
-                    print(f'{sym(piece)}', end='')
+                    rowcurr.append(f'{piece.symbol()}')
                 else:
                     piece = None
-                    print('  ', end='')
-                if col == 7:     # Put line break at the end
-                    print('')
-                else:            # Print two spaces between pieces
-                    print('  ', end='')
-            print(' '*15)
+                    rowcurr.append('  ')
+            board.append(rowcurr)
             if self.checkmate is not None:
                 print(f'{self.checkmate} is checkmated!')
+        return board
 
     def prompt(self):
         if self.debug:
             print('== PROMPT ==')
+
         def valid_format(inputstr):
             return len(inputstr) == 5 and inputstr[2] == ' ' \
-                and inputstr[0:1].isdigit() \
-                and inputstr[3:4].isdigit()
+                   and inputstr[0:1].isdigit() \
+                   and inputstr[3:4].isdigit()
 
         def valid_num(inputstr):
             for char in (inputstr[0:1] + inputstr[3:4]):
@@ -455,7 +456,7 @@ class Board:
             self.move(start, end)
         else:
             raise MoveError('Unknown error, please report '
-                             f'(movetype={repr(movetype)}).')
+                            f'(movetype={repr(movetype)}).')
         self.promotepawns()
         if not self.alive('white', 'king'):
             self.winner = 'black'

@@ -50,6 +50,7 @@
         </div>
 
         <div id="inputarea">
+            <p>{{ ui.errmsg }}</p>
             <form action="/play" method="post">
                 <div class="form-group mx-sm-3 mb-2">
                     <label>{{ ui.inputlabel }}</label>
@@ -61,5 +62,11 @@
         </div>
         </center>
         <!-- Modify this section END -->
+    <script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+    </script>
+    <!-- implement RPG later this is ugly-->
     </body>
 </html>

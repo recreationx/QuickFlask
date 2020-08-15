@@ -21,7 +21,7 @@ def newgame():
     game.start()
     ui.board = game.display()
     ui.inputlabel = f'{game.turn} player: '
-    ui.errmsg = None
+    ui.errmsg = ""
     ui.btnlabel = 'Move'
     return redirect(url_for('play'))
     # , _external=True, _scheme='https' (for https redirection)
@@ -30,22 +30,27 @@ def newgame():
 @app.route('/play',methods=['POST', 'GET'])
 def play():
     # TODO: get player move from GET request object
-    # TODO: if there is no player move, render the page template
+    # currently using post lol
+    # if there is no player move, render the page template
     if request.method == 'POST':
         move = request.form['player_input']
-        start, end = move.split(' ')
-        start = (int(start[0]), int(start[1]))
-        end = (int(end[0]), int(end[1]))
-        game.update(start, end)
-        game.next_turn()
-        ui.board = game.display()
-        ui.inputlabel = f'{game.turn} player: '
-        return render_template('chess.html', ui=ui)
-
+        try:
+            start, end = move.split(' ')
+            start = (int(start[0]), int(start[1]))
+            end = (int(end[0]), int(end[1]))
+            game.update(start, end)
+            game.next_turn()
+            ui.board = game.display()
+            ui.inputlabel = f'{game.turn} player: '
+            ui.errmsg = ""
+            return render_template('chess.html', ui=ui)
+        except Exception as e:
+            ui.errmsg = "Error: " + str(e)
+            return render_template('chess.html', ui=ui)
     return render_template('chess.html', ui=ui)
-    # TODO: Validate move, redirect player back to /play again if move is invalid
-    # If move is valid, check for pawns to promote
-    # Redirect to /promote if there are pawns to promote, otherwise 
+    # Validate move, redirect player back to /play again if move is invalid
+    # TODO: If move is valid, check for pawns to promote
+    # TODO: Redirect to /promote if there are pawns to promote, otherwise
 
 
 @app.route('/promote')

@@ -52,6 +52,16 @@ def play():
     # TODO: If move is valid, check for pawns to promote
     # TODO: Redirect to /promote if there are pawns to promote, otherwise
 
+movehistory = MoveHistory(5)
+
+@app.route('/undo')
+def undo():
+    move = movehistory.pop()
+
+    board.undo(move)
+
+    board.next_turn()
+    return redirect('/play')
 
 @app.route('/promote')
 def promote():

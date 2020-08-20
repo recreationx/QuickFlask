@@ -194,6 +194,7 @@ class Board:
 
     def add(self, coord: tuple, piece):
         self._position[coord] = piece
+        
 
     def move(self, start, end):
         piece = self.get_piece(start)
@@ -470,14 +471,33 @@ class Board:
             self.turn = 'black'
         elif self.turn == 'black':
             self.turn = 'white'
+    
+    def undo(self,undo_coord):
+        start,end,movetype,piece = undo_coord
+        if self.debug:
+            print('== UNDO ==')
+        
+        if self.turn == "white":
+            self.move(end,start)
+            if movetype == "capture":
+                self.add(end,eval(repr(piece)))
 
+        if self.turn == "black":
+            self.move(end,start)
+            if movetype == "capture":
+                self.add(end,eval(repr(piece)))
+        
+
+           
 class MoveHistory:
     '''MoveHistory works like a CircularStack'''
     def __init__(self, size):
-        # Remember to validate input
-        self.size = size
-        self.__data = [None] * size
-        self.head = None
+        if type(size) == int: 
+            self.size = size
+            self.__data = [None] * size
+            self.head = None
+        else:
+            pass
     
     def push(self, move):
         if self.head is None:
@@ -487,14 +507,17 @@ class MoveHistory:
         self.__data[self.head] = move
             
     def pop(self):
-        # Remember to check if MoveHistory is empty
-        move = self.__data[self.head]
-        self.__data[self.head] = None
-        if self.head == 0:
-            self.head = self.size - 1
+        #check if item is the last 
+        if self.head != None:
+            move = self.__data[self.head]
+            self.__data[self.head] = None
+            if self.head == 0:
+                self.head = self.size - 1
+            else:
+                self.head -= 1
+            return move
         else:
-            self.head -= 1
-        return move
+            pass
 
 
 

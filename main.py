@@ -1,10 +1,9 @@
 from flask import Flask
 from flask import render_template, redirect, url_for, request
-from chess import WebInterface, Board
+from chess import WebInterface, Board, MoveHistory
 
 app = Flask(__name__)
 ui = WebInterface()
-
 
 @app.route('/')
 def root():
@@ -19,6 +18,8 @@ def newgame():
     global game
     game = Board()
     game.start()
+    global movehistory
+    movehistory = MoveHistory(5)
     ui.board = game.display()
     ui.inputlabel = f'{game.turn} player: '
     ui.errmsg = ""
@@ -38,6 +39,9 @@ def play():
             start, end = move.split(' ')
             start = (int(start[0]), int(start[1]))
             end = (int(end[0]), int(end[1]))
+            movehistory.push([start,end,game.movetype(start,end),game.get_piece(end)])
+            #move = Move(start, end)
+            #print(move.start, move.end, move.player, move.added, move.removed)
             game.update(start, end)
             game.next_turn()
             ui.board = game.display()
@@ -52,15 +56,14 @@ def play():
     # TODO: If move is valid, check for pawns to promote
     # TODO: Redirect to /promote if there are pawns to promote, otherwise
 
-movehistory = MoveHistory(5)
 
 @app.route('/undo')
 def undo():
     move = movehistory.pop()
-
-    board.undo(move)
-
-    board.next_turn()
+    game.undo(move)
+    game.next_turn()
+    ui.board = game.display()
+    ui.inputlabel = f'{game.turn} player: '
     return redirect('/play')
 
 @app.route('/promote')

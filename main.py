@@ -40,8 +40,6 @@ def play():
             start = (int(start[0]), int(start[1]))
             end = (int(end[0]), int(end[1]))
             movehistory.push([start,end,game.movetype(start,end),game.get_piece(end)])
-            #move = Move(start, end)
-            #print(move.start, move.end, move.player, move.added, move.removed)
             game.update(start, end)
             game.next_turn()
             ui.board = game.display()
@@ -60,10 +58,13 @@ def play():
 @app.route('/undo')
 def undo():
     move = movehistory.pop()
-    game.undo(move)
-    game.next_turn()
-    ui.board = game.display()
-    ui.inputlabel = f'{game.turn} player: '
+    if move == None:
+        ui.errmsg = "No moves to undo"
+    else:
+        game.undo(move)
+        game.next_turn()
+        ui.board = game.display()
+        ui.inputlabel = f'{game.turn} player: '
     return redirect('/play')
 
 @app.route('/promote')

@@ -51,7 +51,7 @@
 
         <div id="inputarea">
             <p>{{ ui.errmsg }}</p>
-            <form action="/play" method="post">
+            <form action="{{ ui.action }}" method="post">
                 <div class="form-group mx-sm-3 mb-2">
                     <label>{{ ui.inputlabel }}</label>
                     <input type="text" name="player_input" value="">

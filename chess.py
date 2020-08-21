@@ -4,6 +4,7 @@ class WebInterface:
         self.btnlabel = None
         self.errmsg = None
         self.board = None
+        self.action = None
 
 
 class MoveError(Exception):
@@ -238,13 +239,14 @@ class Board:
             row = coord[1]
             piece = self.get_piece(coord)
             for opprow, colour in zip([0, 7], ['black', 'white']):
-                if row == opprow and piece.name == 'pawn' \
-                        and piece.colour == colour:
+                print(row, opprow, piece.name, piece.colour)
+                if row == opprow and piece.name == 'pawn' and piece.colour == colour:
                     if PieceClass is None:
-                        PieceClass = self.promoteprompt()
+                        return True
                     promoted_piece = PieceClass(colour)
                     self.remove(coord)
                     self.add(coord, promoted_piece)
+        return False
 
     def king_and_rook_unmoved(self, colour, rook_coord):
         row = rook_coord[1]
@@ -315,13 +317,9 @@ class Board:
                 return None
         return True
 
-    @classmethod
-    def promoteprompt(cls):
-        choice = input(f'Promote pawn to '
-                       '(r=Rook, k=Knight, b=Bishop, '
-                       'q=Queen): ').lower()
+    def promoteprompt(self, choice):
         if choice not in 'rkbq':
-            return cls.promoteprompt()
+            return False
         elif choice == 'r':
             return Rook
         elif choice == 'k':
@@ -344,16 +342,16 @@ class Board:
 
     def start(self):
         colour = 'black'
-        self.add((0, 7), Rook(colour))
-        self.add((1, 7), Knight(colour))
-        self.add((2, 7), Bishop(colour))
-        self.add((3, 7), Queen(colour))
-        self.add((4, 7), King(colour))
-        self.add((5, 7), Bishop(colour))
-        self.add((6, 7), Knight(colour))
-        self.add((7, 7), Rook(colour))
+        # self.add((0, 7), Rook(colour))
+        # self.add((1, 7), Knight(colour))
+        # self.add((2, 7), Bishop(colour))
+        # self.add((3, 7), Queen(colour))
+        # self.add((4, 7), King(colour))
+        # self.add((5, 7), Bishop(colour))
+        # self.add((6, 7), Knight(colour))
+        # self.add((7, 7), Rook(colour))
         for x in range(0, 8):
-            self.add((x, 6), Pawn(colour))
+            self.add((x, 6), Pawn("white"))
 
         colour = 'white'
         self.add((0, 0), Rook(colour))
@@ -458,7 +456,6 @@ class Board:
         else:
             raise MoveError('Unknown error, please report '
                             f'(movetype={repr(movetype)}).')
-        self.promotepawns()
         if not self.alive('white', 'king'):
             self.winner = 'black'
         elif not self.alive('black', 'king'):

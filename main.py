@@ -24,6 +24,7 @@ def newgame():
     ui.inputlabel = f'{game.turn} player: '
     ui.errmsg = ""
     ui.btnlabel = 'Move'
+    ui.action = "/play"
     return redirect(url_for('play'))
     # , _external=True, _scheme='https' (for https redirection)
 
@@ -41,11 +42,14 @@ def play():
             end = (int(end[0]), int(end[1]))
             movehistory.push([start,end,game.movetype(start,end),game.get_piece(end)])
             game.update(start, end)
-            game.next_turn()
-            ui.board = game.display()
-            ui.inputlabel = f'{game.turn} player: '
-            ui.errmsg = ""
-            return render_template('chess.html', ui=ui)
+            if game.promotepawns() == True:
+                return redirect(url_for('promote'))
+            else:
+                game.next_turn()
+                ui.board = game.display()
+                ui.inputlabel = f'{game.turn} player: '
+                ui.errmsg = ""
+                return render_template('chess.html', ui=ui)
         except Exception as e:
             ui.errmsg = "Error: " + str(e)
             return render_template('chess.html', ui=ui)
@@ -67,9 +71,27 @@ def undo():
         ui.inputlabel = f'{game.turn} player: '
     return redirect('/play')
 
-@app.route('/promote')
+@app.route('/promote',methods = ["POST", "GET"])
 def promote():
-    pass
+    ui.board = game.display()
+    ui.action = "/promote"
+    ui.inputlabel = f"{game.turn} promote: "
+    ui.errmsg = "Promote pawn to (r=Rook, k=Knight, b=Bishop, q=Queen)"
+    if request.method == 'POST':
+        promote = request.form['player_input']
+        promotepiece = game.promoteprompt(promote)
+        if promotepiece == False:
+            pass
+        game.promotepawns(promotepiece)
+        game.next_turn()
+        ui.board = game.display()
+        ui.inputlabel = f'{game.turn} player: '
+        ui.errmsg = ""
+        ui.action = "/play"
+        return render_template('chess.html', ui=ui)
+    return render_template("chess.html", ui=ui)
+    
+
 
 
 app.run('0.0.0.0', debug=True)

@@ -24,11 +24,16 @@ def newgame():
     ui.inputlabel = f'{game.turn} player: '
     ui.errmsg = ""
     ui.btnlabel = 'Move'
+    ui.action = '/play'
+    # Test code
+    # game.move((0, 1), (0, 7))
+    # ui.board = game.display()
+    # /Test code
     return redirect(url_for('play'))
     # , _external=True, _scheme='https' (for https redirection)
 
 
-@app.route('/play',methods=['POST', 'GET'])
+@app.route('/play', methods=['POST', 'GET'])
 def play():
     # TODO: get player move from GET request object
     # currently using post lol
@@ -43,11 +48,13 @@ def play():
             #move = Move(start, end)
             #print(move.start, move.end, move.player, move.added, move.removed)
             game.update(start, end)
+            coord = game.find_pawns_for_promotion()
+            if coord is not None:
+                return redirect(url_for('promote'))
             game.next_turn()
             ui.board = game.display()
             ui.inputlabel = f'{game.turn} player: '
             ui.errmsg = ""
-            return render_template('chess.html', ui=ui)
         except Exception as e:
             ui.errmsg = "Error: " + str(e)
             return render_template('chess.html', ui=ui)
@@ -66,9 +73,26 @@ def undo():
     ui.inputlabel = f'{game.turn} player: '
     return redirect('/play')
 
-@app.route('/promote')
+@app.route('/promote', methods=['POST', 'GET'])
 def promote():
-    pass
+    if request.method == 'GET':
+        ui.inputlabel = f'{game.turn} pawn promote to: '
+        ui.btnlabel = 'Promote'
+        ui.action = '/promote'
+        ui.board = game.display()
+    elif request.method == 'POST':
+        chosen_piece = request.form['player_input']
+        if chosen_piece in 'rkbq':
+            game.promotepawn(chosen_piece)
+            ui.errmsg = ""
+            game.next_turn()
+            ui.board = game.display()
+            ui.inputlabel = f'{game.turn} player: '
+            ui.errmsg = ""
+            return redirect(url_for('play'))
+        else:
+            ui.errmsg = 'Invalid piece, please try again.'
+    return render_template('chess.html', ui=ui)
 
 
 app.run('0.0.0.0', debug=True)

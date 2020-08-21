@@ -233,18 +233,27 @@ class Board:
                 return True
         return False
 
-    def promotepawns(self, PieceClass=None):
+    def find_pawns_for_promotion(self):
         for coord in self.coords():
             row = coord[1]
             piece = self.get_piece(coord)
             for opprow, colour in zip([0, 7], ['black', 'white']):
                 if row == opprow and piece.name == 'pawn' \
                         and piece.colour == colour:
-                    if PieceClass is None:
-                        PieceClass = self.promoteprompt()
-                    promoted_piece = PieceClass(colour)
-                    self.remove(coord)
-                    self.add(coord, promoted_piece)
+                    return coord
+
+    def promotepawn(self, char):
+        "Promote pawn according to char"
+        coords = self.find_pawns_for_promotion()
+        self.remove(coords)
+        if char == 'q': 
+            self.add(coords, Queen(str(self.turn)))
+        if char == 'r':
+            self.add(coords, Rook(str(self.turn)))
+        if char == 'b':
+            self.add(coords, Bishop(str(self.turn)))
+        if char == 'k':
+            self.add(coords, Knight(str(self.turn)))
 
     def king_and_rook_unmoved(self, colour, rook_coord):
         row = rook_coord[1]
@@ -314,22 +323,6 @@ class Board:
             else:
                 return None
         return True
-
-    @classmethod
-    def promoteprompt(cls):
-        choice = input(f'Promote pawn to '
-                       '(r=Rook, k=Knight, b=Bishop, '
-                       'q=Queen): ').lower()
-        if choice not in 'rkbq':
-            return cls.promoteprompt()
-        elif choice == 'r':
-            return Rook
-        elif choice == 'k':
-            return Knight
-        elif choice == 'b':
-            return Bishop
-        elif choice == 'q':
-            return Queen
 
     def printmove(self, start, end, **kwargs):
         startstr = f'{start[0]}{start[1]}'
@@ -458,7 +451,6 @@ class Board:
         else:
             raise MoveError('Unknown error, please report '
                             f'(movetype={repr(movetype)}).')
-        self.promotepawns()
         if not self.alive('white', 'king'):
             self.winner = 'black'
         elif not self.alive('black', 'king'):

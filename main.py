@@ -41,11 +41,18 @@ def play():
             end = (int(end[0]), int(end[1]))
             movehistory.push([start,end,game.movetype(start,end),game.get_piece(end)])
             game.update(start, end)
-            game.next_turn()
-            ui.board = game.display()
-            ui.inputlabel = f'{game.turn} player: '
-            ui.errmsg = ""
-            return render_template('chess.html', ui=ui)
+            if not game.alive('white', 'king'):
+                ui.msg = f'Black Wins!!!!!!'
+                return render_template('winner.html',ui=ui)
+            elif not game.alive('black', 'king'):
+                ui.msg = f'White Wins!!!!!!'
+                return render_template('winner.html',ui=ui)
+            else:
+                game.next_turn()
+                ui.board = game.display()
+                ui.inputlabel = f'{game.turn} player: '
+                ui.errmsg = ""
+                return render_template('chess.html', ui=ui)
         except Exception as e:
             ui.errmsg = "Error: " + str(e)
             return render_template('chess.html', ui=ui)
@@ -67,9 +74,8 @@ def undo():
         ui.inputlabel = f'{game.turn} player: '
     return redirect('/play')
 
-@app.route('/promote')
+@app.route('/promote',methods=['POST'])
 def promote():
     pass
-
 
 app.run('0.0.0.0', debug=True)

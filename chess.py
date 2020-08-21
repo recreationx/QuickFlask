@@ -4,6 +4,7 @@ class WebInterface:
         self.btnlabel = None
         self.errmsg = None
         self.board = None
+        self.msg = None
 
 
 class MoveError(Exception):
@@ -463,7 +464,7 @@ class Board:
             self.winner = 'black'
         elif not self.alive('black', 'king'):
             self.winner = 'white'
-
+            
     def next_turn(self):
         if self.debug:
             print('== NEXT TURN ==')
@@ -506,8 +507,7 @@ class MoveHistory:
             self.head = (self.head + 1) % self.size
         self.__data[self.head] = move
             
-    def pop(self):
-        #check if item is the last 
+    def pop(self): 
         if self.head != None:
             move = self.__data[self.head]
             self.__data[self.head] = None

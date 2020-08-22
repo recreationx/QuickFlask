@@ -465,19 +465,32 @@ class Board:
             self.turn = 'white'
     
     def undo(self,undo_coord):
-        start,end,movetype,piece = undo_coord
+        start,end,movetype,start_piece,end_piece,promoted = undo_coord
+        print(undo_coord)
         if self.debug:
             print('== UNDO ==')
-        
+        print(undo_coord)  
         if self.turn == "white":
             self.move(end,start)
             if movetype == "capture":
-                self.add(end,eval(repr(piece)))
+                self.add(end,eval(repr(end_piece)))
+                if promoted is not None:
+                    self.remove(start)
+                    self.add(start,eval(repr(start_piece)))
+            if promoted is not None:
+                    self.remove(start)
+                    self.add(start,eval(repr(start_piece)))  
 
         if self.turn == "black":
             self.move(end,start)
             if movetype == "capture":
-                self.add(end,eval(repr(piece)))
+                self.add(end,eval(repr(end_piece)))
+                if promoted is not None:
+                        self.remove(start)
+                        self.add(start,eval(repr(start_piece)))
+            if promoted is not None:
+                    self.remove(start)
+                    self.add(start,eval(repr(start_piece))) 
         
 
            
@@ -497,7 +510,10 @@ class MoveHistory:
         else:
             self.head = (self.head + 1) % self.size
         self.__data[self.head] = move
-            
+    
+    def push_promostatus(self,item):
+        self.__data[self.head][5] = item
+    
     def pop(self):
         #check if item is the last 
         if self.head != None:

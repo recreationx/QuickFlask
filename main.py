@@ -5,6 +5,7 @@ from chess import WebInterface, Board, MoveHistory
 app = Flask(__name__)
 ui = WebInterface()
 
+
 @app.route('/')
 def root():
     return render_template('index.html')
@@ -44,28 +45,24 @@ def play():
             start, end = move.split(' ')
             start = (int(start[0]), int(start[1]))
             end = (int(end[0]), int(end[1]))
-            movehistory.push([start,end,game.movetype(start,end),game.get_piece(start),game.get_piece(end),None])
+            movehistory.push([start, end, game.movetype(start, end), game.get_piece(start), game.get_piece(end), None])
             game.update(start, end)
             coord = game.find_pawns_for_promotion()
             movehistory.push_promostatus(coord)
             if not game.alive('white', 'king'):
                 ui.msg = f'Black Wins!!!!!!'
-                return render_template('winner.html',ui=ui)
+                return render_template('winner.html', ui=ui)
             elif not game.alive('black', 'king'):
                 ui.msg = f'White Wins!!!!!!'
-                return render_template('winner.html',ui=ui)
+                return render_template('winner.html', ui=ui)
             else:
+                if coord is not None:
+                    return redirect(url_for('promote'))
                 game.next_turn()
                 ui.board = game.display()
                 ui.inputlabel = f'{game.turn} player: '
                 ui.errmsg = ""
                 return render_template('chess.html', ui=ui)
-            if coord is not None:
-                return redirect(url_for('promote'))
-            game.next_turn()
-            ui.board = game.display()
-            ui.inputlabel = f'{game.turn} player: '
-            ui.errmsg = ""
         except Exception as e:
             ui.errmsg = "Error: " + str(e)
             return render_template('chess.html', ui=ui)
@@ -78,7 +75,7 @@ def play():
 @app.route('/undo')
 def undo():
     move = movehistory.pop()
-    if move == None:
+    if move is None:
         ui.errmsg = "No moves to undo"
     else:
         game.undo(move)
@@ -86,6 +83,7 @@ def undo():
         ui.board = game.display()
         ui.inputlabel = f'{game.turn} player: '
     return redirect('/play')
+
 
 @app.route('/promote', methods=['POST', 'GET'])
 def promote():

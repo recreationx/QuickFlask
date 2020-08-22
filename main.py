@@ -48,6 +48,18 @@ def play():
             game.update(start, end)
             coord = game.find_pawns_for_promotion()
             movehistory.push_promostatus(coord)
+            if not game.alive('white', 'king'):
+                ui.msg = f'Black Wins!!!!!!'
+                return render_template('winner.html',ui=ui)
+            elif not game.alive('black', 'king'):
+                ui.msg = f'White Wins!!!!!!'
+                return render_template('winner.html',ui=ui)
+            else:
+                game.next_turn()
+                ui.board = game.display()
+                ui.inputlabel = f'{game.turn} player: '
+                ui.errmsg = ""
+                return render_template('chess.html', ui=ui)
             if coord is not None:
                 return redirect(url_for('promote'))
             game.next_turn()

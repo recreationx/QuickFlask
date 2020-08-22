@@ -88,8 +88,10 @@ def promote():
             ui.errmsg = ""
             game.next_turn()
             ui.board = game.display()
+            ui.btnlabel = "Move"
             ui.inputlabel = f'{game.turn} player: '
             ui.errmsg = ""
+            ui.action = "/play"
             return redirect(url_for('play'))
         else:
             ui.errmsg = 'Invalid piece, please try again.'

@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css">
+    <link rel="icon" href="../static/favicon.ico" type="image/x-icon" />
 </head>
 
 <body style="background-color:black">
-    <h1 style="color:white;font-family: 'Pacifico', cursive;text-align:center; margin-top: 200px"> {{ui.msg}} </h1>
+<div style = "text-align: center">
+    <h1 style="color:white;font-family: 'Pacifico', cursive;text-align:center; margin-top: 300px; margin-bottom:50px"> {{ui.msg}} </h1>
+    <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='/'">Back to home</button>
+    <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='/newgame'">New Game</button>
+</div>
 </body>
 </html>

@@ -41,12 +41,14 @@ def play():
     if request.method == 'POST':
         move = request.form['player_input']
         try:
+            print(request.referrer)
             start, end = move.split(' ')
             start = (int(start[0]), int(start[1]))
             end = (int(end[0]), int(end[1]))
-            movehistory.push([start,end,game.movetype(start,end),game.get_piece(end)])
+            movehistory.push([start,end,game.movetype(start,end),game.get_piece(start),game.get_piece(end),None])
             game.update(start, end)
             coord = game.find_pawns_for_promotion()
+            movehistory.push_promostatus(coord)
             if coord is not None:
                 return redirect(url_for('promote'))
             game.next_turn()

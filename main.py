@@ -66,7 +66,8 @@ def play():
         except Exception as e:
             ui.errmsg = "Error: " + str(e)
             return render_template('chess.html', ui=ui)
-    return render_template('chess.html', ui=ui)
+    elif request.method == "GET":
+        return render_template('chess.html', ui=ui)
     # Validate move, redirect player back to /play again if move is invalid
     # TODO: If move is valid, check for pawns to promote
     # TODO: Redirect to /promote if there are pawns to promote, otherwise

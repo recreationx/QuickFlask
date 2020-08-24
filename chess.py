@@ -468,29 +468,18 @@ class Board:
         start,end,movetype,start_piece,end_piece,promoted = undo_coord
         print(undo_coord)
         if self.debug:
-            print('== UNDO ==')
-        print(undo_coord)  
-        if self.turn == "white":
-            self.move(end,start)
-            if movetype == "capture":
-                self.add(end,eval(repr(end_piece)))
-                if promoted is not None:
-                    self.remove(start)
-                    self.add(start,eval(repr(start_piece)))
+            print('== UNDO ==')  
+        self.move(end,start)
+        if movetype == "capture":
+            self.add(end,eval(repr(end_piece)))
             if promoted is not None:
-                    self.remove(start)
-                    self.add(start,eval(repr(start_piece)))  
+                self.remove(start)
+                self.add(start,eval(repr(start_piece)))
+        if promoted is not None:
+                self.remove(start)
+                self.add(start,eval(repr(start_piece)))  
 
-        if self.turn == "black":
-            self.move(end,start)
-            if movetype == "capture":
-                self.add(end,eval(repr(end_piece)))
-                if promoted is not None:
-                        self.remove(start)
-                        self.add(start,eval(repr(start_piece)))
-            if promoted is not None:
-                    self.remove(start)
-                    self.add(start,eval(repr(start_piece))) 
+         
         
 
            
